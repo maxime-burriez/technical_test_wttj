@@ -26,6 +26,20 @@ The database load scripts found in the [db_scripts](db_scripts) folder will be p
   * [32_migrations.sql](db_scripts/32_migrations.sql) (This is where most of the magic happens.)
   * [42_seeds.sql](db_scripts/42_seeds.sql)
 
+## 02 / 03 . Question: Scaling ?
+
+> Now, let’s imagine we have 100 000 000 job offers in our database, and 1000 new job offers per second (yeah, it’s a lot coming in!). What do you implement if we want the same output than in the previous exercise in real-time?
+
+In order to avoid a bottleneck in the insertion of job offers in the database, I propose to take advantage of [postgreSQL database schemas](https://www.postgresql.org/docs/current/ddl-schemas.html). Thus, with this multitenancy strategy, the workload would be better distributed.
+
+Initially, before analyzing the results obtained in the first exercise, I had thought of creating a schema by continent. However, if we look at the distribution of job offers per continent, we can see that the majority of job offers are in Europe (4757/5069).
+
+On the other hand, if we look at the distribution of job offers per profession category, we can see that this distribution seems more balanced.
+
+So, I propose to create one database schema per profession category.
+
+Finally, to complete the architecture, it is possible to implement the archiving of obsolete job offers. For example, these expired job offers could be transferred to a dedicated schema.
+
 ## About me
 
   * Github profile: https://github.com/maxime-burriez
