@@ -1,0 +1,7 @@
+FROM postgis/postgis:14-3.1
+
+RUN apt-get update &&\
+    apt-get install -y binutils libproj-dev gdal-bin
+
+ADD db_scripts/ /docker-entrypoint-initdb.d/
+ADD fixtures/ /fixtures/
