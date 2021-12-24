@@ -40,6 +40,45 @@ So, I propose to create one database schema per profession category.
 
 Finally, to complete the architecture, it is possible to implement the archiving of obsolete job offers. For example, these expired job offers could be transferred to a dedicated schema.
 
+## 03 / 03 . Exercise: API implementation
+
+To have this data consumable by an API, I would make this choice of technical stack:
+  * Web server: Phoenix (Elixir);
+  * data query and manipulation language: GraphQL
+  * database: postgreSQL
+
+I propose this filters:
+
+```graphql
+type Profession {
+  id: ID!
+  name: String @search(by: [term])
+  category_name: String @search(by: [hash])
+}
+
+type Job {
+  id: ID!
+  profession: Profession
+  contract_type: String @search(by: [hash])
+  name: String @search(by: [term])
+  office_latitude: Float
+  office_longitude: Float
+  continent: String @search(by: [hash])
+}
+
+type JobsQuantity {
+  profession_category_name: String @search(by: [hash])
+  continent: String @search(by: [hash])
+  quantity: Int!
+}
+
+type Query {
+  jobs: [Job]!
+  professions: [Profession]!
+  jobsQuantities: [JobsQuantity]!
+}
+```
+
 ## About me
 
   * Github profile: https://github.com/maxime-burriez
